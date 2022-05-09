@@ -1,0 +1,2 @@
+cookie: (?<=JSESSIONID=)\w+
+token: (?<="token"value=")\w+
