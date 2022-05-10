@@ -1,19 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#obtain 'cookie' and 'token' in http://portal.gd165.com
 
 import requests,sys,re
 
-def do_post():
-    cookies = {
-        'JSESSIONID': '6811AE4BCC09A6068E98BD07B5A63923',
-    }
+def do_post(cookie):
+    if(cookie!=None):
+        cookies = {
+            'JSESSIONID': cookie, 
+        }
+    else:
+        cookies = {}
 
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
         'Accept-Language': 'zh-CN,zh;q=0.9',
         'Cache-Control': 'max-age=0',
         'Connection': 'keep-alive',
-        # 'Cookie': 'JSESSIONID=209FA33D703870C07C6DB30A652D78D0',
         'Origin': 'http://portal.gd165.com',
         'Referer': 'http://portal.gd165.com/?wlanuserip=10.130.128.135&wlanacname=&basname=120.80.200.50&ssid=bitzh.edu&vlanid=ethtrunk/10:4000.0',
         'Upgrade-Insecure-Requests': '1',
@@ -26,20 +29,22 @@ def do_post():
         'testmacauth': 'false',
     }
 
-    response = requests.post('http://portal.gd165.com/index.do', \
-                             #cookies=cookies, 
-                             headers=headers, data=data, verify=False)
+    response = requests.post('http://portal.gd165.com/index.do', cookies=cookies, headers=headers, data=data, verify=False)
     return response
 
 def without_cookie():
-    pass
+    response=do_post(None)
+    cookie=re.search("(?<=JSESSIONID=)\w+",str(response.cookies)).group()
     return cookie
 
-def with_cookie():
-    pass
+def with_known_cookie(cookie):
+    response=do_post(cookie)
+    token=re.search("(?<=\"token\"value=\")\w*",str(response.text)).group()
     return token
 
-#print cookie
-print(re.search("(?<=JSESSIONID=)\w+",str(response.cookies)).group())
-#print token
-print(re.search("(?<=\"token\"value=\")\w*",str(response.text)).group())
+
+if __name__=='__main__':
+    cookie=without_cookie()
+    print(cookie)
+    token=with_known_cookie(cookie)
+    print(token)

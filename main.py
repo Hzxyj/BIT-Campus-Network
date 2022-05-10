@@ -15,8 +15,8 @@ class auto_load:
         try:
             with open(conf,'r') as js:
                 self.__config=json.load(js)
-            print("aaaa")
         except:
+            print("fail to open config")
 
     def main(self):
         if(byod(self.__config['id'],self.__config['byodpw'])):
@@ -25,5 +25,4 @@ class auto_load:
             print("unexpected error in byod")
 
 if __name__=='__main__':
-    load=auto_load("loginf.json")
-    load.main()
+    load=auto_load("loginfo.json")
