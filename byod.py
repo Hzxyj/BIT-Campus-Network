@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import requests
+import sys
 
-def byod():
+def byod(id,pw):
     try:
         headers = {
             'Accept': 'application/json, text/javascript, */*; q=0.01',
@@ -16,8 +17,8 @@ def byod():
         }
 
         json_data = {
-            'userName': '',
-            'userPassword': '',
+            'userName': id,
+            'userPassword': pw,
             'serviceSuffixId': '-1',
             'dynamicPwdAuth': False,
             'code': '',
@@ -35,4 +36,4 @@ def byod():
         return False
 
 if __name__=='__main__':
-    byod()
+    print(byod(sys.argv[1],sys.argv[2]))
