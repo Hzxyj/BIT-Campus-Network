@@ -42,9 +42,11 @@ def with_known_cookie(cookie):
     token=re.search("(?<=\"token\"value=\")\w*",str(response.text)).group()
     return token
 
+def visit():
+    info={}
+    info[0]=without_cookie()
+    info[1]=with_known_cookie(info[0])
+    return info
 
 if __name__=='__main__':
-    cookie=without_cookie()
-    print(cookie)
-    token=with_known_cookie(cookie)
-    print(token)
+    print(visit())
